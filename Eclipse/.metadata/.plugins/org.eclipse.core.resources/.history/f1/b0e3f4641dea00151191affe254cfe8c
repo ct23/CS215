@@ -1,0 +1,118 @@
+import java.util.Arrays;
+
+/**
+ * Title: Merge Sort
+ */
+
+/**
+ * @author Colin
+ * @date Mar 12, 2016
+ *
+ *
+ * Modifications:
+ * Date			Changes
+ * 
+ */
+public class MergeSort {
+	int[] arrayOne;
+	int[] arrayTwo;
+	
+	/**
+	 * @param int[] origArray	Array to be merged
+	 * @param int p				Position of first element in first subarray
+	 * @param int q				Position of last element in first subarray
+	 * @param int r				Position of last element in second subarray
+	 * @return long duration	Time to sort, in nanoseconds
+	 */
+	public void merge(int[] origArray, int p, int q, int r) {
+		// reset values
+		arrayOne = null;
+		arrayTwo = null;
+		
+		// Calculate number of objects to be placed in each array
+		int sizeOne = q - p + 1;
+		int sizeTwo = r - q;
+		
+		// Create two subarrays
+		arrayOne = new int[sizeOne];
+		arrayTwo = new int[sizeTwo];
+		
+		// Populate subarrays
+		System.arraycopy(origArray, p, arrayOne, 0, sizeOne);
+		System.arraycopy(origArray, q + 1, arrayTwo, 0, sizeTwo);
+		
+		// ints to track array positions
+		int i = 0; // start at arrayOne[i]
+		int j = 0; // start at arrayTwo[j]
+		// Scan origArray from p to r
+		for (int k = p; k <= r; k++) {
+			// Check whether we've reached end of array
+			if (i < sizeOne) {
+				if (j < sizeTwo) {
+					
+					// Take the smaller of the two elements (or first if equal)
+					if (arrayOne[i] <= arrayTwo[j]) {
+						origArray[k] = arrayOne[i];
+						i++;
+					} else {
+						origArray[k] = arrayTwo[j];
+						j++;
+					}
+				} else {
+					// if j >= sizeTwo, arrayTwo is "empty"
+					// fill all remaining values from arrayOne
+					fillFromOne(origArray, k, i, r);
+					break;
+				}
+			} else {
+				// if i >= sizeOne arrayOne is "empty"
+				// fill all remaining values from arrayTwo
+				fillFromTwo(origArray, k, j, r);
+				break;
+			}
+		}
+	}
+	
+	/**
+	 * Recursively calls the merge() method to sort
+	 * an array in any order.
+	 * 
+	 * @param origArray	Original array to be sorted
+	 * @param p			First element in array
+	 * @param r			Last element in arary
+	 * @return duration	Time to sort, in nanoseconds
+	 */
+	public long mergeSort(int[] origArray, int p, int r) {
+		// Start duration clock
+		long duration = System.nanoTime();
+		
+		// If p >= r, array has at most 1 element, so already sorted
+		if (p < r) {
+			// Compute index q to partition array into 2 subarrays
+			int q = ((p + r) / 2);
+			// Recursively run merge sort
+			// (will run until subarrays broken down into
+			// smallest unit (1 object), when p >= r)
+			mergeSort(origArray, p, q);
+			mergeSort(origArray, q + 1, r);
+			merge(origArray, p, q, r);
+			System.out.println("Merged array: " + Arrays.toString(origArray));
+		}
+		// Calculate, then return, elapsed time
+		duration = System.nanoTime() - duration;
+		return duration;
+	}
+	
+	private void fillFromOne(int[] origArray, int k, int i, int r) {
+		for (int a = k; a <= r; a++) {
+			origArray[a] = arrayOne[i];
+			i++;
+		}
+	}
+	private void fillFromTwo(int[] origArray, int k, int j, int r) {
+		for (int a = k; a <= r; a++) {
+			origArray[a] = arrayTwo[j];
+			j++;
+		}
+	}
+}

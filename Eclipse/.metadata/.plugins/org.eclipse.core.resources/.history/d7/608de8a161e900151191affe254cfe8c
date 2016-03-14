@@ -1,0 +1,83 @@
+/**
+ * Title:
+ */
+
+/**
+ * @author Colin
+ * @date Mar 13, 2016
+ *
+ *
+ * Modifications:
+ * Date			Changes
+ * 
+ */
+public class HeapSort {
+	// Instance variables:
+	int l;	// left child index
+	int r;	// right child index
+	
+	
+	public int[] buildMaxHeap(int[] origArray) {
+		
+	}
+	
+	/**
+	 * 
+	 * @param	int[] inputArray	Heap to be "max-heapified"
+	 * @param	int i				Index of root node
+	 */
+	public void maxHeapify(int[] inputArray, int i) {
+		int largest;
+		
+		l = left(i);
+		r = right(i);
+		// If left child greater than parent
+		// (and not at end of array), mark largest
+		// Otherwise, mark parent largest
+		if (l <= (inputArray.length - 1) &&
+				inputArray[l] > inputArray[i]) {
+			largest = l;
+		} else {
+			largest = i;
+		}
+		// If right child greater than "largest"
+		// (and not at end of array), mark largest
+		if (r <= (inputArray.length - 1) &&
+				inputArray[r] > inputArray[largest]) {
+			largest = r;
+		}
+		
+		// If "largest" greater than parent, switch them
+		// Then run recursively for entire tree
+		// (largest is new root node)
+		if (largest != i) {
+			int temp = inputArray[i];
+			inputArray[i] = inputArray[largest];
+			inputArray[largest] = temp;
+			maxHeapify(inputArray, largest);
+		}
+		
+	}
+	
+	public int[] heapSort(int[] inputHeap) {
+		
+	}
+	
+	/**
+	 * Helper method for maxHeapify
+	 * @param int i		current element index
+	 * @return int l	left element index
+	 */
+	private int left(int i) {
+		return (2*i);
+	}
+	
+	/**
+	 * Helper method for maxHeapify
+	 * @param int i		current element index
+	 * @return int r	right element index
+	 */
+	private int right(int i) {
+		return (2*i + 1);
+	}
+}

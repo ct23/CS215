@@ -1,0 +1,110 @@
+/**
+ * Title:
+ */
+
+/**
+ * @author Colin
+ * @date Mar 13, 2016
+ *
+ *
+ * Modifications:
+ * Date			Changes
+ * 
+ */
+public class HeapSort {
+	// Instance variables:
+	int l;	// left child index
+	int r;	// right child index
+	int heapSize;	// heap length
+	
+	/**
+	 * Builds the Max Heap, using maxHeapify method
+	 * @param inputArray
+	 */
+	public void buildMaxHeap(int[] inputArray) {
+		heapSize = inputArray.length;
+		for (int i = ((heapSize / 2) - 1); i >= 1; i--) {
+			maxHeapify(inputArray, i);
+		}
+		
+	}
+	
+	/**
+	 * Correctly organizes a heap given array
+	 * and index of root node 
+	 * @param	int[] inputArray	Heap to be "max-heapified"
+	 * @param	int i				Index of root node
+	 */
+	public void maxHeapify(int[] inputArray, int i) {
+		int largest;
+		
+		l = left(i);
+		r = right(i);
+		// If left child greater than parent
+		// (and not at end of array), mark largest
+		// Otherwise, mark parent largest
+		if (l <= (heapSize - 1) &&
+				inputArray[l] > inputArray[i]) {
+			largest = l;
+		} else {
+			largest = i;
+		}
+		// If right child greater than "largest"
+		// (and not at end of array), mark largest
+		if (r <= (heapSize - 1) &&
+				inputArray[r] > inputArray[largest]) {
+			largest = r;
+		}
+		
+		// If "largest" greater than parent, switch them
+		// Then run recursively (downwards)
+		// ("largest" position is new root node)
+		if (largest != i) {
+			int temp = inputArray[i];
+			inputArray[i] = inputArray[largest];
+			inputArray[largest] = temp;
+			maxHeapify(inputArray, largest);
+		}
+	}
+	/**
+	 * Runs a heap sort.
+	 * @param inputArray	Original, raw array.
+	 * @return duration		Run time (nanoseconds)
+	 */
+	public long heapSort(int[] inputArray) {
+		// Start duration clock
+		long duration = System.nanoTime();
+				
+		buildMaxHeap(inputArray);
+		for (int i = (inputArray.length - 1); i >= 2; i--) {
+			// exchange inputArray[1] with inputArray[i]
+			int temp = inputArray[i];
+			inputArray[i] = inputArray[1];
+			inputArray[1] = temp;
+			// decrement heapSize
+			heapSize--;
+			maxHeapify(inputArray, 1);
+		}
+		// Calculate, then return, elapsed time
+			duration = System.nanoTime() - duration;
+			return duration;
+	}
+	
+	/**
+	 * Helper method for maxHeapify
+	 * @param int i		current element index
+	 * @return int l	left element index
+	 */
+	private int left(int i) {
+		return (2*i);
+	}
+	
+	/**
+	 * Helper method for maxHeapify
+	 * @param int i		current element index
+	 * @return int r	right element index
+	 */
+	private int right(int i) {
+		return (2*i + 1);
+	}
+}

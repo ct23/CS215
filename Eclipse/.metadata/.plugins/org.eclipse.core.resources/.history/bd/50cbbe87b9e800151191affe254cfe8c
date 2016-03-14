@@ -1,0 +1,35 @@
+/**
+ * Title: Merge Sort
+ */
+
+/**
+ * @author Colin
+ * @date Mar 12, 2016
+ *
+ *
+ * Modifications:
+ * Date			Changes
+ * 
+ */
+public class MergeSort {
+
+	/**
+	 * @param int[] origArray	Array to be merged
+	 * @param int p				First element in first subarray
+	 * @param int q				Last element in first subarray
+	 * @param int r				Last element in second subarray
+	 * @return long duration	Time to sort, in nanoseconds
+	 */
+	public long merge(int[] origArray, int p, int q, int r) {
+		// Start duration clock
+		long duration = System.nanoTime();
+		
+		// Create two subarrays
+		int[] arrayOne;
+		int[] arrayTwo;
+		
+		// Calculate, then return, elapsed time
+		duration = System.nanoTime() - duration;
+		return duration;
+	}
+}

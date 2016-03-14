@@ -1,0 +1,188 @@
+import java.util.Arrays;
+
+/**
+ * Title: Tests
+ * Desc:  Runs time tests user-specified number of times.
+ */
+
+/**
+ * @author Colin
+ * @date Jan 31, 2016
+ *
+ *
+ * Modifications:
+ * Date			Changes
+ * 
+ */
+public class Tests {
+	InsertionSort insSorter = new InsertionSort();
+	MergeSort mSorter = new MergeSort();
+	HeapSort hSorter = new HeapSort();
+	
+	long avgRandomIns = 0;
+	long avgBestIns = 0;
+	long avgWorstIns = 0;
+	long avgRandomM = 0;
+	long avgBestM = 0;
+	long avgWorstM = 0;
+	long avgRandomH = 0;
+	long avgBestH = 0;
+	long avgWorstH = 0;
+	
+	int[] origArray;
+	int[] sortedArray;
+	int[] reverseArray;
+	int[] usableOArray;
+	int[] usableSArray;
+	int[] usableRArray;
+	
+	public void run(int arraySize, int numTests) {
+		
+		ReverseSort revSorter = new ReverseSort();
+		GenerateArrays arrayGenerator = new GenerateArrays();
+		
+		// Generate arrays
+		ArrayObject arrays = arrayGenerator.generate(arraySize);
+		origArray = arrays.original;
+		sortedArray = arrays.sorted;
+		reverseArray = arrays.reverse;
+		
+		// Copy arrays, so as not to modify originals
+		usableOArray = origArray.clone();
+		usableSArray = sortedArray.clone();
+		usableRArray = reverseArray.clone();
+		
+		// Print original array, sorted array, and reverse sorted array.
+		System.out.println("Original array (average input):\n" + Arrays.toString(origArray));
+		long duration = insSorter.regSort(sortedArray);
+		System.out.println("Sorted array (best-case input):\n" + Arrays.toString(sortedArray));
+		//System.out.println("Time to sort: " + duration);
+		revSorter.revSort(reverseArray);
+		System.out.println("Reverse sorted array (worst-case input):\n" + Arrays.toString(reverseArray));
+		
+		
+		System.out.println("Running tests...");
+		// Run insertion sort tests
+		insertionTests(numTests);
+		// Run merge sort tests
+		mergeTests(numTests);
+		// Run heap sort tests
+		heapTests(numTests);
+		
+		
+		// Print all average times
+		System.out.println("\nInsertion Sort Averages:\nAverage input: " + avgRandomIns + "\tBest-case: " + avgBestIns
+							   + "\t\tWorst-case: " + avgWorstIns);
+		System.out.println("Merge Sort Averages:\nAverage input: " + avgRandomM + "\tBest-case: " + avgBestM
+				   + "\t\tWorst-case: " + avgWorstM);
+		System.out.println("Heap Sort Averages:\nAverage input: " + avgRandomH + "\tBest-case: " + avgBestH
+				   + "\tWorst-case: " + avgWorstH);
+		
+	}
+	
+	
+	/**
+	 * Runs insertion sort tests specified number of times
+	 * 
+	 * @param numTests	Number of times to run tests
+	 */
+	private void insertionTests(int numTests) {
+		System.out.println("\nRunning insertion tests...");
+		for (int i = 0; i < numTests; i++) {
+			// Sort each array
+			long avgSortTime = insSorter.regSort(usableOArray);
+			long bestSortTime = insSorter.regSort(usableSArray);
+			long worstSortTime = insSorter.regSort(usableRArray);
+			
+			// Print all times
+			System.out.println("\nAverage input: " + avgSortTime + "\tBest-case: " + bestSortTime
+							   + "\t\tWorst-case: " + worstSortTime);
+			
+			// Add times to averages
+			avgRandomIns += avgSortTime;
+			avgBestIns += bestSortTime;
+			avgWorstIns += worstSortTime;
+			
+			// Re-clone original arrays for next test
+			usableOArray = origArray.clone();
+			usableSArray = sortedArray.clone();
+			usableRArray = reverseArray.clone();
+		}
+		
+		// Calculate insertion sort average times
+		avgRandomIns = avgRandomIns / numTests;
+		avgBestIns = avgBestIns / numTests;
+		avgWorstIns = avgWorstIns / numTests;
+	}
+	
+	/**
+	 * Runs merge sort tests specified number of times
+	 * 
+	 * @param numTests	Number of times to run tests
+	 */
+	private void mergeTests(int numTests) {
+		System.out.println("\nRunning merge tests...");
+		int p = 0;
+		int q = (usableOArray.length / 2);
+		int r = (usableOArray.length - 1);
+		for (int i = 0; i < numTests; i++) {
+			// Sort each array
+			long avgSortTime = mSorter.merge(usableOArray, p, q, r);
+			long bestSortTime = mSorter.merge(usableSArray, p, q, r);
+			long worstSortTime = mSorter.merge(usableRArray, p, q, r);
+			
+			// Print all times
+			System.out.println("\nAverage input: " + avgSortTime + "\tBest-case: " + bestSortTime
+							   + "\t\tWorst-case: " + worstSortTime);
+			
+			// Add times to averages
+			avgRandomM += avgSortTime;
+			avgBestM += bestSortTime;
+			avgWorstM += worstSortTime;
+			
+			// Re-clone original arrays for next test
+			usableOArray = origArray.clone();
+			usableSArray = sortedArray.clone();
+			usableRArray = reverseArray.clone();
+		}
+		
+		// Calculate insertion sort average times
+		avgRandomM = avgRandomM / numTests;
+		avgBestM = avgBestM / numTests;
+		avgWorstM = avgWorstM / numTests;
+	}
+	
+	/**
+	 * Runs heap sort tests specified number of times
+	 * 
+	 * @param numTests	Number of times to run tests
+	 */
+	private void heapTests(int numTests) {
+		System.out.println("\nRunning heap tests...");
+		for (int i = 0; i < numTests; i++) {
+			// Sort each array
+			long avgSortTime = hSorter.heapSort(usableOArray);
+			long bestSortTime = hSorter.heapSort(usableSArray);
+			long worstSortTime = hSorter.heapSort(usableRArray);
+			
+			// Print all times
+			System.out.println("\nAverage input: " + avgSortTime + "\tBest-case: " + bestSortTime
+							   + "\t\tWorst-case: " + worstSortTime);
+			
+			// Add times to averages
+			avgRandomH += avgSortTime;
+			avgBestH += bestSortTime;
+			avgWorstH += worstSortTime;
+			
+			// Re-clone original arrays for next test
+			usableOArray = origArray.clone();
+			usableSArray = sortedArray.clone();
+			usableRArray = reverseArray.clone();
+		}
+		
+		// Calculate insertion sort average times
+		avgRandomH = avgRandomH / numTests;
+		avgBestH = avgBestH / numTests;
+		avgWorstH = avgWorstH / numTests;
+	}
+}

@@ -1,0 +1,62 @@
+/**
+ * Title: Merge Sort
+ */
+
+/**
+ * @author Colin
+ * @date Mar 12, 2016
+ *
+ *
+ * Modifications:
+ * Date			Changes
+ * 
+ */
+public class MergeSort {
+
+	/**
+	 * @param int[] origArray	Array to be merged
+	 * @param int p				Position of first element in first subarray
+	 * @param int q				Position of last element in first subarray
+	 * @param int r				Position of last element in second subarray
+	 * @return long duration	Time to sort, in nanoseconds
+	 */
+	public long merge(int[] origArray, int p, int q, int r) {
+		// Start duration clock
+		long duration = System.nanoTime();
+		
+		// Calculate number of objects to be placed in each array
+		int sizeOne = q - p + 1;
+		int sizeTwo = r - q;
+		
+		// Create two subarrays
+		int[] arrayOne = new int[sizeOne + 1];
+		int[] arrayTwo = new int[sizeTwo + 1];
+		// (extra element in each array should be null)
+		arrayOne[sizeOne] = null;
+		arrayTwo[sizeTwo] = null;
+		
+		// Populate subarrays
+		System.arraycopy(origArray, p, arrayOne, 0, sizeOne);
+		System.arraycopy(origArray, q + 1, arrayTwo, 0, sizeTwo);
+		
+		// ints to track array positions
+		int i = 0; // start at arrayOne[i]
+		int j = 0; // start at arrayTwo[j]
+		// Scan origArray from p to r
+		for (int k = p; k <= r; k++) {
+			// Take the smaller of the two elements (or first if equal)
+			if (arrayOne[i] <= arrayTwo[j]) {
+				origArray[k] = arrayOne[i];
+				i++;
+			}
+			else {
+				origArray[k] = arrayTwo[j];
+				j++;
+			}
+		}
+		
+		// Calculate, then return, elapsed time
+		duration = System.nanoTime() - duration;
+		return duration;
+	}
+}
